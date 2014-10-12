@@ -1,55 +1,67 @@
 <?php
 
-$jsonString = file_get_contents("menu.json");
-
-$con = mysql_connect("localhost", "username", "password");
-mysql_connect_db('databse name', $con);
-
-$result = json_decode($jsonString);
-
 //-------------------- file reading & arrays --------------------
-$file = fopen("menu.json", "r");
-$filetext = fread($file, filesize("menu.json"));
-fclose($file);
-$text = json_decode($filetext, true);
+$temp = json_decode(file_get_contents("menu.json"), true);
+$menu = populateMenu($temp);
 
+function populateMenu($text) {
 // copy menu items each into a separate corresponding array
-$menu = $text['menu'];
-$meats = $menu['meats'];
-$buns = $menu['buns'];
-$cheeses = $menu['cheeses'];
-$toppings = $menu['toppings'];
-$sauces = $menu['sauces'];
-$sides = $menu['sides'];
+    $fillMenu = $text['menu'];
+    $meats = $fillMenu['meats'];
+    $buns = $fillMenu['buns'];
+    $cheeses = $fillMenu['cheeses'];
+    $toppings = $fillMenu['toppings'];
+    $sauces = $fillMenu['sauces'];
+    $sides = $fillMenu['sides'];
+
+// write overall menu with new arrays
+    $sections = [$meats, $buns, $cheeses, $toppings, $sauces, $sides];
+    $sectionNames = ['meats', 'buns', 'cheeses', 'toppings', 'sauces', 'sides'];
+    $i = 0;
+// pass each separate part of menu to populate arrays with info (name, price)
+    foreach ($sections as $part) {
+        $part = setSections($part, $sectionNames[$i]);
+        $i++;
+    }
+    // return $sections;
+}
 
 // set name and price of each unique entry for all separate pieces
-foreach ($meats as $meatmap) {
-    $meatName = $meatmap['name'];
-    $meatPrice = $meatmap['price'];
+function setSections($array, $tableName) {
+    foreach ($array as $map) {
+        $name = $map['name'];
+        $price = $map['price'];
+
+        // call to insert into mySQL database
+        insertSQL($tableName, $name, $price);
+    }
+    return $array;
 }
 
-foreach ($buns as $bunmap) {
-    $bunName = $bunmap['name'];
-    $bunPrice = $bunmap['price'];
+//-------------------- inserting into SQL --------------------
+// inserting into specific table with each piece associated with that array
+function insertSQL($table, $name, $price) {
+    $con = mysql_connect("localhost", "username", "password");
+    mysql_select_db("BurgerBar", $con); // select db named "BurgerBar"
+
+    if (!$con) { // return error if could not connect"
+        die('Could not connect: ' . mysql_error());
+    }
+
+    // SQL query
+    $query = "INSERT INTO $table" .
+            "(name, price)" .
+            "VALUES ('$name', '$price')";
+
+    // insert into db, while storing a value
+    $retval = mysql_query($query, $con);
+
+    if (!$retval) { // if no value, then did not insert
+        die('Could not enter data: ' . mysql_error());
+    }
+    // return successful
+    echo "Entered data successfully\n";
+    mysql_close($con); // close db connection
 }
 
-foreach ($cheeses as $cheesemap) {
-    $cheeseName = $cheesemap['name'];
-    $cheesePrice = $cheesemap['price'];
-}
-
-foreach ($toppings as $toppingmap) {
-    $toppingName = $toppingmap['name'];
-    $toppingPrice = $toppingmap['price'];
-}
-
-foreach ($sauces as $saucemap) {
-    $sauceName = $saucemap['name'];
-    $saucePrice = $saucemap['price'];
-}
-
-foreach ($sides as $sidemap) {
-    $sideName = $sidemap['name'];
-    $sidePrice = $sidemap['price'];
-}
 ?>

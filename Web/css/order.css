@@ -1,0 +1,42 @@
+#burgerCreate {
+    position:relative;
+    float:left;
+    width:55%;
+    margin-left:20px;
+}
+
+table {
+    border-collapse:collapse;
+    width:100%;
+}
+
+table tr td {
+    border: solid 1px black;
+    width:50%;
+
+
+}
+
+.right {
+    text-align: right;
+}
+
+#orderView {
+    position:relative;
+    float:right;
+    width:35%;
+    min-height:592px;
+    margin-right:20px;
+    margin-bottom: 50px;
+}
+
+.column {
+    position:relative;
+    float:left;
+    width:30%;
+}
+
+.itemList {
+    border: 1px dashed #000000;
+    margin: 2%;
+}

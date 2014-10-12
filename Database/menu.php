@@ -1,8 +1,10 @@
 <?php
 
 //-------------------- file reading & arrays --------------------
-$temp = json_decode(file_get_contents("menu.json"), true);
-$menu = populateMenu($temp);
+$menu = populateMenu(json_decode(file_get_contents("menu.json"), true));
+$host = 'localhost';
+$user = 'root';
+$pass = 'rootpassword';
 
 function populateMenu($text) {
 // copy menu items each into a separate corresponding array
@@ -41,7 +43,8 @@ function setSections($array, $tableName) {
 //-------------------- inserting into SQL --------------------
 // inserting into specific table with each piece associated with that array
 function insertSQL($table, $name, $price) {
-    $con = mysql_connect("localhost", "username", "password");
+    global $host, $user, $pass;
+    $con = mysql_connect($host, $user, $pass);
     mysql_select_db("BurgerBar", $con); // select db named "BurgerBar"
 
     if (!$con) { // return error if could not connect"

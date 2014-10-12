@@ -1,0 +1,100 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww11220\viewh10680\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 //GETTING THE COST OF THINGS\
+\
+//Get cost of individual burger types per user\'92s order (cumulative sum)\
+SELECT burgerID as "Burger", (quantity*cost) as "Price for Burgers"\
+FROM orderform natural join orderdetail\
+WHERE userID = 666;\
+\
+//Get cost of individual burger types for an entire order \
+SELECT burgerID as "Burger", cost as "Price for Burgers"\
+FROM orderform natural join orderdetail\
+WHERE userID = 666;\
+\
+\
+//Set the cost of an entire order based on Order Details\
+UPDATE OrderForm SET price = (\
+SELECT sum(quantity*cost)\
+FROM orderdetail\
+WHERE orderID = 1)\
+WHERE orderID = 1;\
+\
+//Returns cost of individual meat  for an individual burger\
+SELECT Meats.price\
+FROM orderForm natural join orderDetail natural join Burger inner join Meats\
+WHERE Meats.name = Burger.Meat AND\
+USERID = 666;\
+\
+//Returns cost of individual bun  for an individual burger\
+SELECT Buns.price\
+FROM orderForm natural join orderDetail natural join Burger inner join Buns\
+WHERE Buns.name = Burger.Bun AND\
+USERID = 666;\
+\
+//Returns cost of individual cheese  for an individual burger\
+SELECT Cheeses.price\
+FROM orderForm natural join orderDetail natural join Burger inner join Cheeses\
+WHERE Cheeses.name = Burger.cheese AND\
+USERID = 666;\
+\
+//Returns the cost of all the toppings for an individual burger\
+SELECT sum(Toppings.price) as "Price"\
+FROM orderForm natural join orderDetail natural join Burger natural join ToppingDetails inner join Toppings\
+WHERE ToppingDetails.BurgerID = Burger.BurgerID AND\
+	ToppingDetails.ToppingName = Toppings.name;\
+\
+\
+//Price of a single burger according to BurgerID\
+SET @burgerIDNum = 1;\
+\
+SET @meatPrice = (SELECT Meats.price\
+FROM orderForm natural join orderDetail natural join Burger inner join Meats\
+WHERE Meats.name = Burger.Meat AND\
+burger.burgerID = @burgerIDNum);\
+\
+SET @bunsPrice = (SELECT Buns.price\
+FROM orderForm natural join orderDetail natural join Burger inner join Buns\
+WHERE Buns.name = Burger.Bun AND\
+burger.burgerID = @burgerIDNum);\
+\
+SET @cheesePrice = (SELECT Cheeses.price\
+FROM orderForm natural join orderDetail natural join Burger inner join Cheeses\
+WHERE Cheeses.name = Burger.cheese AND\
+burger.burgerID = @burgerIDNum);\
+\
+SET @toppingPrice = (SELECT sum(Toppings.price)\
+FROM orderForm natural join orderDetail natural join Burger natural join ToppingDetails inner join Toppings\
+WHERE ToppingDetails.BurgerID = Burger.BurgerID AND\
+burger.burgerID = @burgerIDNum AND\
+	ToppingDetails.ToppingName = Toppings.name);\
+	\
+SET @priceOfBurger = @meatPrice + @bunsPrice + @cheesePrice + @toppingPrice;\
+\
+SELECT @priceOfBurger as "Price of Burger";\
+\
+\
+//VIEWING THINGS - Returns Name and Price\
+SELECT *\
+FROM buns;\
+\
+SELECT *\
+FROM cheeses;\
+\
+SELECT *\
+FROM Meats;\
+\
+SELECT *\
+FROM Sauces;\
+\
+SELECT *\
+FROM Sides;\
+\
+SELECT *\
+FROM Toppings;\
+\
+}

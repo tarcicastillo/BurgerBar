@@ -74,22 +74,22 @@ SELECT @priceOfBurger as "Price of Burger";
 
 //VIEWING THINGS - Returns Name and Price
 SELECT *
-FROM buns;
+FROM Bun;
 
 SELECT *
-FROM cheeses;
+FROM Cheese;
 
 SELECT *
-FROM Meats;
+FROM Meat;
 
 SELECT *
 FROM Sauces;
 
 SELECT *
-FROM Sides;
+FROM Side;
 
 SELECT *
-FROM Toppings;
+FROM Topping;
 
 
 //To Be Done
@@ -104,3 +104,44 @@ If it’s a registered user, pre-fill out the form (return this info)
 //Pricing of total price
 
 //Deleting stuff, editing stuff, that stuff
+
+//Creating a Burger
+INSERT INTO BURGER (12, 12, "", "", "", "", 0, 0);
+
+//Adding the meat to a particular burger (or edit)
+UPDATE Burger SET Meat = (
+SELECT name
+FROM meat
+WHERE name = @selectedMeat)
+WHERE BurgerID = @BurgerID;
+
+//Adding the Cheese to a  particular burger
+UPDATE Burger SET Cheese = (
+SELECT name
+FROM Cheese
+WHERE name = @selectedCheese)
+WHERE BurgerID = @BurgerID;
+
+//Adding the Side to a particular burger
+UPDATE Burger SET Side = (
+SELECT name
+FROM Side
+WHERE name = @selectedSide)
+WHERE BurgerID = @BurgerID;
+
+//Adding the bun for a particular burger
+UPDATE Burger SET Bun = (
+SELECT name
+FROM Bun
+WHERE name = @selectedBun)
+WHERE BurgerID = @BurgerID;
+
+
+//Adding a toppingDetail
+INSERT INTO toppingDetail VALUES 
+	(@burgerID, @selectedTopping);
+
+//Adding a sauceDetali
+INSERT INTO sauceDetail VALUES 
+	(@burgerID, @selectedSauce);
+

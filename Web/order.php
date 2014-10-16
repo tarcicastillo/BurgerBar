@@ -46,18 +46,19 @@
                 </div>
                 <h2>Toppings</h2>
                 <div id="toppingsList" class="itemList">
-                    <input id="NoToppings" type="checkbox" name="toppings" value="No Toppings" checked data-price="0.00"><label for="NoToppings"> No Toppings</label><br>
+                    <input id="NoToppings" type="button" class="noToppings" value="No Toppings" data-price="0.00"><br>
                 </div>
             </section>
             <section class="column">
                 <h2>Sauces</h2>
                 <div id="saucesList" class="itemList">
-                    <input id="NoSauce" type="checkbox" name="sauces" value="No Sauce" checked data-price="0.00"><label for="NoSauce"> No Sauce</label><br>
+                    <input id="NoSauce" type="button" class="noSauces" value="No Sauce" data-price="0.00"><br>
                 </div>
                 <h2>Sides</h2>
                 <div id="sidesList" class="itemList">
                     <input id="NoSide" type="radio" name="sides" value="No Sides" checked data-price="0.00"><label for="NoSides"> No Sides</label><br>
-                <!-- </div><input type="button" id="Clear" value="Clear Vegetables"> -->
+                </div>
+                <input id="addToOrder" type="button" value="Add Burger to Order >>">
             </section>
         </form>
     </div>
